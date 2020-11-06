@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterUserRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RegistrationController extends Controller
 {
     public function index()
     {
         $html = "
-        <form action='/register' method='POST'>
-            <input type='text' name='email' placeholder='email'>
-            <input type='password' name='password' placeholder='password'>
-            <input type='submit' value='register'>
-        </form>";
+        ";
 
         die($html);
     }
@@ -22,6 +20,12 @@ class RegistrationController extends Controller
     {
         $validated = $request->validated();
 
-        die("I WILL TRY TO REGISTER USER WITH EMAIL: {$validated['email']} AND PASS: {$validated['password']}");
+        $user = new User();
+        $user->email = $validated['email'];
+        $user->password = Hash::make($validated['password']);
+        $user->name = $validated['email'];
+        $user->save();
+
+        dd($user);
     }
 }

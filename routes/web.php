@@ -13,8 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('register', \App\Http\Controllers\RegistrationController::class)
-->only(['index', 'store']);
+Route::get('login', 'App\Http\Controllers\AuthController@showLoginForm');
+Route::get('register', 'App\Http\Controllers\AuthController@showRegisterForm');
+Route::post('login', 'App\Http\Controllers\AuthController@login');
+Route::post('register', 'App\Http\Controllers\AuthController@register');
+Route::get('logout', 'App\Http\Controllers\AuthController@logout');
+
+Route::resource('blogs', \App\Http\Controllers\BlogController::class)
+    ->only(['index', 'show', 'store', 'update', 'destroy']);
 
 Route::get('/', function () {
 
