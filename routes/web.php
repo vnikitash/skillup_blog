@@ -25,3 +25,25 @@ Route::resource('blogs', \App\Http\Controllers\BlogController::class)
 Route::get('/', function () {
 
 });
+
+Route::get('/mail', '\App\Http\Controllers\MailController@index');
+Route::get('job', '\App\Http\Controllers\JobController@index');
+Route::get('invite', function (\Illuminate\Http\Request $request) {
+    $hash = $request->input('hash');
+
+    /** @var \App\Models\UserVefirication $uv */
+    $uv = \App\Models\UserVefirication::query()
+        ->where('hash', $hash)
+        ->firstOrFail();
+
+    /** @var \App\Models\User $user */
+    $user = \App\Models\User::query()->where('id', $uv->user_id)->first();
+
+    $user->verified = 1;
+    $user->save();
+    $uv->delete();
+
+    \Illuminate\Support\Facades\Auth::login($user);
+
+    return redirect('/blogs');
+});

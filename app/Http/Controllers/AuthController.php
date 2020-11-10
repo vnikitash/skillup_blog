@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\RegisterUserRequest;
+use App\Mail\InvitationLinkEmail;
 use App\Models\User;
+use App\Models\UserVefirication;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController
 {
@@ -19,6 +22,15 @@ class AuthController
     public function login(RegisterUserRequest $request)
     {
         $validated = $request->validated();
+
+        $unverfiedUser = User::query()
+            ->where('email', $validated['email'])
+            ->where('verified', 0)
+            ->first();
+
+        if ($unverfiedUser) {
+            die("Check email for invitation link!");
+        }
 
         $auth = Auth::attempt([
             'email' => $validated['email'],
@@ -47,10 +59,19 @@ class AuthController
         $user->name = $validated['email'];
         $user->save();
 
-        $auth = Auth::attempt([
+        $uv = new UserVefirication();
+        $uv->user_id = $user->id;
+        $uv->hash = md5(time() . $user->id);
+        $uv->save();
+
+        Mail::to($user)->send(new InvitationLinkEmail($uv->hash));
+
+        /*$auth = Auth::attempt([
             'email' => $validated['email'],
             'password' => $validated['password']
-        ]);
+        ]);*/
+
+        die("Check your email!");
 
         return redirect('/blogs');
     }
