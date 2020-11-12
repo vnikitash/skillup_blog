@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,6 +18,8 @@ use Illuminate\Notifications\Notifiable;
  * @property string $password
  * @property string $name
  * @property int $verified
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class User extends Authenticatable
 {
@@ -38,8 +42,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
     ];
 
     /**
@@ -50,4 +53,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function blogs(): HasMany
+    {
+        return $this->hasMany(Blog::class)->orderBy('action', 'ASC');
+    }
+
+    public function activeBlogs(): HasMany
+    {
+        return $this->hasMany(Blog::class)->where('active',1);
+    }
 }

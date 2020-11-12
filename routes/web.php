@@ -28,6 +28,32 @@ Route::get('/', function () {
 
 Route::get('/mail', '\App\Http\Controllers\MailController@index');
 Route::get('job', '\App\Http\Controllers\JobController@index');
+
+
+Route::any('regex' ,function (\App\Http\Requests\CreatePhoneRequest $request) {
+    die("Valid phone: " . $request->phone);
+});
+
+/**
+ *
+ * GET /users
+ * POST /users
+ * GET /users/{id} // if id = export => users/export
+ * PUT/PATCH /users/{id}
+ * DELETE /users/{id}
+ *
+ */
+Route::get('users/export', '\App\Http\Controllers\UserController@export');
+
+Route::resource('users', \App\Http\Controllers\UserController::class)
+->only(['index', 'show']);
+
+Route::get('weather', '\App\Http\Controllers\WeatherController@index');
+Route::get('weather2', '\App\Http\Controllers\WeatherController@index2');
+Route::get('weather3', '\App\Http\Controllers\WeatherController@index3');
+
+
+
 Route::get('invite', function (\Illuminate\Http\Request $request) {
     $hash = $request->input('hash');
 

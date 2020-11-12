@@ -34,7 +34,7 @@ class BlogController extends Controller
 
     public function show($blogId): JsonResponse
     {
-        $blog = Blog::query()
+        $blog = Blog::with(['user'])
             ->where('id', '=', $blogId)
             ->first();
 
