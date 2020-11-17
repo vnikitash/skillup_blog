@@ -30,8 +30,10 @@ Route::get('/mail', '\App\Http\Controllers\MailController@index');
 Route::get('job', '\App\Http\Controllers\JobController@index');
 
 
-Route::any('regex' ,function (\App\Http\Requests\CreatePhoneRequest $request) {
-    die("Valid phone: " . $request->phone);
+Route::group(['prefix' => 'webhook', 'namespace' => '\App\Http\Controllers\Webhooks'], function () {
+    Route::get('telegram', 'TelegramController@webhook');
+    Route::get('telegram/ads', 'TelegramController@massAds');
+    Route::get('viber', 'ViberController@webhook');
 });
 
 /**
