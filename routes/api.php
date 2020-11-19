@@ -14,6 +14,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('test', function () {
+    die("TEST IN API.PHP");
 });
+
+
+// POST localhost/api/auth/login
+// POST localhost/api/auth/register
+// POST localhost/api/auth/refresh (*)
+
+
+Route::group(['namespace' => '\App\Http\Controllers\API'], function () {
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('login', 'AuthController@login');
+        Route::post('register', 'AuthController@register');
+        Route::put('refresh', 'AuthController@refresh')->middleware(['auth_api']);
+    });
+
+    Route::get('user/test', 'UserController@somePublicMethod');
+
+    Route::middleware(\App\Http\Middleware\CheckApiAuthMiddleware::class)->group(function () {
+        Route::put('user', 'UserController@update');
+        Route::get('user/me', 'UserController@aboutMe');
+    });
+});
+
+
+

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateBlogsTable extends Migration
+class AddTokenColumnToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::table('blogs', function (Blueprint $table) {
-            $table->boolean('active')->default(1);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('token', 64)->unique();
         });
     }
 
@@ -25,8 +25,9 @@ class UpdateBlogsTable extends Migration
      */
     public function down()
     {
-        Schema::table('blogs', function (Blueprint $table) {
-            $table->dropColumn('active');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('token');
         });
+
     }
 }
