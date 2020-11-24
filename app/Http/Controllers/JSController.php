@@ -26,6 +26,12 @@ class JSController extends Controller
         return view('js2');
     }
 
+    public function index3()
+    {
+
+        return view('js3');
+    }
+
     public function users()
     {
 
