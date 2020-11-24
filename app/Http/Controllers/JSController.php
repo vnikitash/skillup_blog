@@ -9,6 +9,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+
 class JSController extends Controller
 {
     public function index()
@@ -21,5 +24,13 @@ class JSController extends Controller
     {
 
         return view('js2');
+    }
+
+    public function users()
+    {
+
+        return view('users', [
+            'users' => User::query()->get()
+        ]);
     }
 }

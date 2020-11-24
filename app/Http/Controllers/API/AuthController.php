@@ -56,4 +56,14 @@ class AuthController extends Controller
 
         return response()->json(['token' => $user->token], Response::HTTP_ACCEPTED);
     }
+
+    public function logout(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+        $user->token = md5(rand(1,100000)) . md5(time());
+        $user->save();
+
+        return response()->json(['status' => true], Response::HTTP_ACCEPTED);
+    }
 }

@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-
+    die("Привет мир!");
 });
 
-
+Route::get('users', '\App\Http\Controllers\JSController@users');
 Route::get('js', '\App\Http\Controllers\JSController@index');
 Route::get('js2', '\App\Http\Controllers\JSController@index2');
 
