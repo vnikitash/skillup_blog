@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 });
 
+
+Route::get('js', '\App\Http\Controllers\JSController@index');
+Route::get('js2', '\App\Http\Controllers\JSController@index2');
+
 Route::get('test' ,function () {
    die("TEST IN WEB.PHP");
 });
