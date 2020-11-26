@@ -13,27 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::resource('/', '\App\Http\Controllers\PostController');
+Route::put('/{id}/likes', '\App\Http\Controllers\PostController@setLike');
 
-Route::post('upload', function(\Illuminate\Http\Request $request) {
-    $request->file('file')->storePubliclyAs('public', 'test.png');
-
-    die(\Illuminate\Support\Facades\Storage::url('test.png'));
-});
-
-Route::put('put', function (\Illuminate\Http\Request $request) {
-    dd($request->all());
-});
-
-Route::get('/', function () {
-    die("Привет мир!");
-});
-
-Route::get('users', '\App\Http\Controllers\JSController@users');
-Route::get('js', '\App\Http\Controllers\JSController@index');
-Route::get('js2', '\App\Http\Controllers\JSController@index2');
-Route::get('js3', '\App\Http\Controllers\JSController@index3');
-
-Route::get('test' ,function () {
-   die("TEST IN WEB.PHP");
-});
+Route::get('register', '\App\Http\Controllers\AuthController@getRegisterForm');
+Route::post('register', '\App\Http\Controllers\AuthController@register');
+Route::get('login', '\App\Http\Controllers\AuthController@getLoginForm');
+Route::post('login', '\App\Http\Controllers\AuthController@login');
+Route::get('logout', '\App\Http\Controllers\AuthController@logout');
 
